@@ -13,10 +13,38 @@ I took the opportunity to gather some additional requirements and redesigned it 
 - Have reverse voltage protection 
 - Settings/limits should be configurable
 - use an external power source (don't rely on power from the device under test)
-- 
+ 
 ## Components used:
 - 4x20 LCD
 - rotary encoder to set values
 - Several sensors
 - Arduino pro mini to manage logic, configuration and control the applied load 
   - A separate DAC to improve granularity 
+
+## Development plan ELoad v2.1:
+
+Goal:
+- create software for the new hardware
+- Hardware:
+    - LCD:
+        Show state and sensor readings
+        Show error + relevant sensor + config
+    - Mode pushbutton: 
+        (short) Select mode of operation
+        (short) Select config item
+        (long) Switch between config and operation
+    - Run pushbutton:
+        Switches runmode (Select / Run / Error)
+    - LED shows runmode
+    - Rotary Encoder:
+        rotate change target value
+        push switch increment size
+
+    - DAC: used to drive Resistance
+    - Sensors: Temp, Current & Voltage
+
+Development using TDD
+
+=> High level modules do only high level stuff
+=> Low level modules 
+=> All Arduino specific code = lowest level. Moved to interface modules

@@ -1,0 +1,37 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/include",
+                "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/src",
+                "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/.pio/libdeps/laptop/Unity/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/include",
+                    "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/src",
+                    "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/.pio/libdeps/laptop/Unity/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60002",
+                ""
+            ],
+            "cppStandard": "c++11",
+            "compilerPath": "C:/Users/srooi/programfiles/msys64/mingw64/bin/gcc.exe",
+            "compilerArgs": [
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
