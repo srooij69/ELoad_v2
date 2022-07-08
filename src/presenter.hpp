@@ -18,7 +18,7 @@ namespace presenter {
 
     uint32_t _led_color=0;
     bool __blink_led = false;
-    unsigned long __blink_last = 0;
+    unsigned long __blink_next = 0;
 
     eAction buttons[NR_BUTTONS];
     long __buttons_start_down[NR_BUTTONS];
@@ -53,6 +53,7 @@ namespace presenter {
             display::clear();
             display::writeText(0,0, title);
             __blink_led = ((_led_color & 0xFF000000)>0);
+            __blink_next = 0;
             _set_led_color(_led_color);
             if( runMode == config::Init) _ShowSplash(); 
         }
@@ -89,9 +90,24 @@ namespace presenter {
         }
     }
 
+    void handle_led_blink(){
+        static uint8_t blink_on = 0; 
+        if( __blink_next < 1) {
+            blink_on = 0;
+            __blink_next = __now;
+        }
+        if( __now >= __blink_next) {
+            blink_on = 1 - blink_on;
+            __blink_next += config::Led_Blink_millis;
+        }
+
+        _set_led_color(_led_color * blink_on);
+    }
+
     void Tick(){
         __now = ArduinoAdapter::get_millis();
         handle_buttonpress();
+        handle_led_blink();
     }
 
 }

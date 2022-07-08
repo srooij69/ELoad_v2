@@ -77,6 +77,31 @@ void presenter_read_buttons(){
       teardown_test();
 }
 
+void presenter_read_ledblink(){
+    setup_test();
+
+    uint8_t red = _RED >> 16;
+    uint8_t off = _OFF >> 16;
+
+    unsigned long mills[]   {  0, 195, 205, 295, 405, 605, 805 };
+    uint8_t exp_led_color[] {red, red, off, off, red, off, red };
+
+    fsm::state.set( config::Error );
+    fsm::display_state();
+
+    ArduinoAdapter::millis_initTurn(mills);
+
+    TEST_ASSERT_EQUAL(true, presenter::__blink_led);
+
+    for(int j=0; j<7; j++){
+        presenter::Tick();
+        TEST_ASSERT_EQUAL( exp_led_color[j], display::leds[LED_RED]);
+    }
+
+    teardown_test();
+}
+
+
 void presenter_display_splash(void)
 {
     char exp[4][21] = {"                    ", "   ELoad v2.1       ", " by Steven de Rooij ", "                    "};
@@ -108,10 +133,10 @@ void presenter_display_RunModes(void)
 
 void Run(){
     RUN_TEST(presenter_read_buttons);
+    RUN_TEST(presenter_read_ledblink);
     RUN_TEST(presenter_display_splash);
     RUN_TEST(presenter_display_RunModes);
 }
-
 
 }
 
