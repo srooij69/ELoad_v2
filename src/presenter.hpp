@@ -4,6 +4,8 @@
 #include "config.hpp"
 #include "display.hpp"
 
+#include "ArduinoAdapter.hpp"
+
 #define BUTTON_MODE    0
 #define BUTTON_RUN     1
 #define BUTTON_ENCODER 2
@@ -11,9 +13,15 @@
 
 namespace presenter {
     enum eAction { None, Short, LongDown, Long, Left, Right};
+
+    unsigned long __now = 0;  
+
+    uint32_t _led_color=0;
+    bool __blink_led = false;
+    unsigned long __blink_last = 0;
+
     eAction buttons[NR_BUTTONS];
     long __buttons_start_down[NR_BUTTONS];
-    unsigned long __now = 0;
 
     void setup(){
         for(int i=0; i< NR_BUTTONS; i++) buttons[i]=None;
@@ -26,23 +34,26 @@ namespace presenter {
         display::writeText(2,0, config::splash_text[1]);
     }
 
+    void _set_led_color(uint32_t led_color){
+        display::leds[LED_RED]   = (led_color >> 16) & 0x00FF;
+        display::leds[LED_GREEN] = (led_color >>  8) & 0x00FF;
+        display::leds[LED_BLUE]  = (led_color >>  0) & 0x00FF;
+    }
+
     void DisplayRunMode(config::eRunMode runMode){
         static config::eRunMode prevMode = config::Dummy;
+        char const * title;
+        
         bool isFirst = (prevMode != runMode);
 
-        char const * title;
-        unsigned long led_color;
-
-        led_color = config::runmode_colors[(int)runMode];
+        _led_color = config::runmode_colors[(int)runMode];
         title = config::runmode_titles[(int)runMode];
 
         if( isFirst) { 
             display::clear();
             display::writeText(0,0, title);
-            display::leds[LED_RED]   = (led_color >> 16) & 0x00FF;
-            display::leds[LED_GREEN] = (led_color >>  8) & 0x00FF;
-            display::leds[LED_BLUE]  = (led_color >>  0) & 0x00FF;
-
+            __blink_led = ((_led_color & 0xFF000000)>0);
+            _set_led_color(_led_color);
             if( runMode == config::Init) _ShowSplash(); 
         }
         prevMode = runMode;
@@ -82,7 +93,7 @@ namespace presenter {
         __now = ArduinoAdapter::get_millis();
         handle_buttonpress();
     }
-    
+
 }
 
 #endif

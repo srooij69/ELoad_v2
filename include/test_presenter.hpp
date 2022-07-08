@@ -8,6 +8,7 @@
 
 #include "ArduinoAdapter.hpp"
 #include "presenter.hpp"
+#include "fsm.hpp"
 
 namespace test_presenter {
     
@@ -37,11 +38,13 @@ void _test_title_led(config::eRunMode runMode, char const * exp, unsigned long r
     uint8_t exp_red   = (rgb >> 16) & 0x0000FF;
     uint8_t exp_green = (rgb >>  8) & 0x0000FF;
     uint8_t exp_blue  = (rgb >>  0) & 0x0000FF;
+    bool exp_blink = (rgb  & 0xFF000000)>0;
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(exp, display::lines[0], 15);
     TEST_ASSERT_EQUAL(exp_red, display::leds[LED_RED]);
     TEST_ASSERT_EQUAL(exp_green, display::leds[LED_GREEN]);
     TEST_ASSERT_EQUAL(exp_blue, display::leds[LED_BLUE]);
+    TEST_ASSERT_EQUAL(exp_blink, presenter::__blink_led);
 
     teardown_test();
 }
@@ -99,6 +102,8 @@ void presenter_display_RunModes(void)
     _test_title_led(config::RunCV, "C.Volt   Run   ", 0x00F400);
     _test_title_led(config::RunCP, "C.Power  Run   ", 0x00F400);
     _test_title_led(config::RunCR, "C.Resist Run   ", 0x00F400); 
+
+    _test_title_led(config::Error, "        ERROR  ", 0x08FF0000); 
 }
 
 void Run(){
