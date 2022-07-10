@@ -32,8 +32,7 @@ void _test_buttonAction(config::eRunMode start, int button, presenter::eAction a
     fsm::state.set(start);
     presenter::buttons[button] = action;
 
-    fsm::tick();
-
+    fsm::handle_state();
     TEST_ASSERT_EQUAL(expect,  fsm::state.runMode);
 
     teardown_test();
@@ -70,42 +69,42 @@ void fsm_init_to_selectCC_state_after_500(void)
     teardown_test();
 }
 
-void fsm_SelectCC(void){
+void fsm_handlestate_SelectCC(void){
     _test_buttonAction(config::SelectCC, BUTTON_MODE, presenter::Short, config::SelectCV );
     _test_buttonAction(config::SelectCC, BUTTON_RUN, presenter::Short, config::RunCC );
 }
 
-void fsm_SelectCV(void){
+void fsm_handlestate_SelectCV(void){
     _test_buttonAction(config::SelectCV, BUTTON_MODE, presenter::Short, config::SelectCP );
     _test_buttonAction(config::SelectCV, BUTTON_RUN, presenter::Short, config::RunCV );
 }
 
-void fsm_SelectCP(void){
+void fsm_handlestate_SelectCP(void){
     _test_buttonAction(config::SelectCP, BUTTON_MODE, presenter::Short, config::SelectCR );
     _test_buttonAction(config::SelectCP, BUTTON_RUN , presenter::Short, config::RunCP );
 }
 
-void fsm_SelectCR(void){
+void fsm_handlestate_SelectCR(void){
     _test_buttonAction(config::SelectCR, BUTTON_MODE, presenter::Short, config::SelectCC );
     _test_buttonAction(config::SelectCR, BUTTON_RUN , presenter::Short, config::RunCR );
 }
 
-void fsm_RunCC(void){
+void fsm_handlestate_RunCC(void){
     _test_buttonAction(config::RunCC, BUTTON_MODE, presenter::Short, config::RunCC );
     _test_buttonAction(config::RunCC, BUTTON_RUN , presenter::Short, config::SelectCC );
 }
 
-void fsm_RunCV(void){
+void fsm_handlestate_RunCV(void){
     _test_buttonAction(config::RunCV, BUTTON_MODE, presenter::Short, config::RunCV );
     _test_buttonAction(config::RunCV, BUTTON_RUN , presenter::Short, config::SelectCV );
 }
 
-void fsm_RunCP(void){
+void fsm_handlestate_RunCP(void){
     _test_buttonAction(config::RunCP, BUTTON_MODE, presenter::Short, config::RunCP );
     _test_buttonAction(config::RunCP, BUTTON_RUN , presenter::Short, config::SelectCP );
 }
 
-void fsm_RunCR(void){
+void fsm_handlestate_RunCR(void){
     _test_buttonAction(config::RunCR, BUTTON_MODE, presenter::Short, config::RunCR );
     _test_buttonAction(config::RunCR, BUTTON_RUN , presenter::Short, config::SelectCR );
 }
@@ -115,14 +114,15 @@ void Run(){
     RUN_TEST(fsm_initial_state);
     RUN_TEST(fsm_init_to_selectCC_state_after_500);
 
-    RUN_TEST( fsm_SelectCC );
-    RUN_TEST( fsm_SelectCV );
-    RUN_TEST( fsm_SelectCP );
-    RUN_TEST( fsm_SelectCR );
-    RUN_TEST( fsm_RunCC );
-    RUN_TEST( fsm_RunCV );
-    RUN_TEST( fsm_RunCP );
-    RUN_TEST( fsm_RunCR );
+    RUN_TEST( fsm_handlestate_SelectCC );
+    RUN_TEST( fsm_handlestate_SelectCV );
+    RUN_TEST( fsm_handlestate_SelectCP );
+    RUN_TEST( fsm_handlestate_SelectCR );
+    RUN_TEST( fsm_handlestate_RunCC );
+    RUN_TEST( fsm_handlestate_RunCV );
+    RUN_TEST( fsm_handlestate_RunCP );
+    RUN_TEST( fsm_handlestate_RunCR );
+    
 }
 
 }

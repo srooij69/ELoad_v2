@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include "display.hpp"
+#include "sensors.hpp"
 
 #include "ArduinoAdapter.hpp"
 
@@ -104,10 +105,13 @@ namespace presenter {
         _set_led_color(_led_color * blink_on);
     }
 
-    void Tick(){
-        __now = ArduinoAdapter::get_millis();
+    unsigned long  tick(){
+        __now = ArduinoAdapter::get_millis();	
+
         handle_buttonpress();
         handle_led_blink();
+
+        return __now;
     }
 
 }

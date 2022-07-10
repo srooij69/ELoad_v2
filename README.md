@@ -22,7 +22,8 @@ I took the opportunity to gather some additional requirements and redesigned it 
   - A separate DAC to improve granularity 
 
 ## Development plan ELoad v2.1:
-GitHub project: https://github.com/users/srooij69/projects/1
+Github Repository: https://github.com/srooij69/ELoad_v2
+GitHub project:    https://github.com/users/srooij69/projects/1
 Goal:
 - create software for the new hardware
 - Hardware:

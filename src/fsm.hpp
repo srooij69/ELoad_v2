@@ -3,8 +3,7 @@
 
 #include "config.hpp"
 #include "presenter.hpp"
-
-#include "ArduinoAdapter.hpp"
+#include "sensors.hpp"
 
 namespace fsm {
   unsigned long __now = 0;
@@ -70,19 +69,20 @@ void handle_state(){
     case config::RunCR : {
       if( presenter::buttons[BUTTON_RUN ] == presenter::Short) newState = config::SelectCR;
       break; }
+
+    case config::Error :{
+      break; }
+    case config::Dummy :{
+      break; }
   }
 
   state.set(newState);
 }
 
-void display_state(){  
-  presenter::DisplayRunMode(state.runMode);
-}
-
 void tick(){  
-  __now = ArduinoAdapter::get_millis();
+  __now = presenter::tick();
   handle_state();
-  display_state();
+  presenter::DisplayRunMode(state.runMode);
 }
 
 }

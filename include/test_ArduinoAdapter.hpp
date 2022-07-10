@@ -15,7 +15,7 @@ void teardown_test(){
 }
 
 
-void aa_millis_timeBased(void)
+void aadapter_millis_timeBased(void)
 {
     setup_test();
     unsigned long now = ArduinoAdapter::get_millis();
@@ -30,7 +30,7 @@ void aa_millis_timeBased(void)
     teardown_test();
 }
 
-void aa_millis_turnBased(void)
+void aadapter_millis_turnBased(void)
 {
     setup_test();
     unsigned long list[] = {12, 5004, 12345};
@@ -44,7 +44,7 @@ void aa_millis_turnBased(void)
     teardown_test();
 }
 
-void aa_pinState(){
+void aadapter_pinState(){
     setup_test();
 
     unsigned long list[] = {1, 2, 30, 56};
@@ -68,9 +68,9 @@ void aa_pinState(){
 }
 
 void Run(){
-    RUN_TEST(aa_millis_turnBased);
-    RUN_TEST(aa_millis_timeBased);
-    RUN_TEST(aa_pinState);
+    RUN_TEST(aadapter_millis_turnBased);
+    RUN_TEST(aadapter_millis_timeBased);
+    RUN_TEST(aadapter_pinState);
 }
 
 }
