@@ -6,6 +6,8 @@
 
 #include "config.hpp"
 
+#include "display.hpp"
+
 #include "ArduinoAdapter.hpp"
 #include "presenter.hpp"
 
@@ -14,29 +16,17 @@ namespace test_presenter
 
     void setup_test()
     {
-        presenter::buttons[BUTTON_MODE] = presenter::None;
     }
 
     void teardown_test()
     {
     }
 
-    void _test_pin_to_Action(int btn, int cnt, unsigned long mills[], bool pinVal[], presenter::eAction result)
-    {
-        ArduinoAdapter::pinState_init(btn, mills, pinVal);
-
-        for (int i = 0; i < cnt; i++)
-        {
-            presenter::tick();
-        }
-        TEST_ASSERT_EQUAL(result, presenter::buttons[btn]);
-    }
-
     void _test_title_led(config::eRunMode runMode, char const *exp, unsigned long rgb)
     {
         setup_test();
 
-        presenter::DisplayRunMode(runMode);
+        presenter::display_runMode(runMode);
 
         uint8_t exp_red = (rgb >> 16) & 0x0000FF;
         uint8_t exp_green = (rgb >> 8) & 0x0000FF;
@@ -52,37 +42,10 @@ namespace test_presenter
         teardown_test();
     }
 
-    void presenter_read_buttons()
-    {
-        setup_test();
-
-        unsigned long mills[] = {0, 1, 3, 30, 56, 128};
-        bool pinValues[] = {HIGH, HIGH, LOW, LOW, HIGH, HIGH};
-        _test_pin_to_Action(BUTTON_MODE, 4, mills, pinValues, presenter::None);
-        _test_pin_to_Action(BUTTON_MODE, 5, mills, pinValues, presenter::Short);
-        _test_pin_to_Action(BUTTON_MODE, 6, mills, pinValues, presenter::None);
-
-        unsigned long mills2[] = {0, 1, 100, 500, 503, 128};
-        bool pinValues2[] = {HIGH, LOW, LOW, LOW, HIGH, HIGH};
-        _test_pin_to_Action(BUTTON_RUN, 3, mills2, pinValues2, presenter::None);
-        _test_pin_to_Action(BUTTON_RUN, 4, mills2, pinValues2, presenter::LongDown);
-        _test_pin_to_Action(BUTTON_RUN, 5, mills2, pinValues2, presenter::Long);
-        _test_pin_to_Action(BUTTON_RUN, 6, mills2, pinValues2, presenter::None);
-
-        unsigned long mills3[] = {0, 10, 20, 30, 40, 50};
-        bool pinValues3[] = {HIGH, LOW, HIGH, LOW, HIGH, LOW};
-        _test_pin_to_Action(BUTTON_MODE, 0, mills3, pinValues3, presenter::None);
-        _test_pin_to_Action(BUTTON_MODE, 1, mills3, pinValues3, presenter::None);
-        _test_pin_to_Action(BUTTON_MODE, 2, mills3, pinValues3, presenter::None);
-        _test_pin_to_Action(BUTTON_MODE, 3, mills3, pinValues3, presenter::None);
-        _test_pin_to_Action(BUTTON_MODE, 4, mills3, pinValues3, presenter::None);
-        _test_pin_to_Action(BUTTON_MODE, 5, mills3, pinValues3, presenter::None);
-
-        teardown_test();
-    }
-
     void presenter_read_ledblink()
     {
+        unsigned long now;
+
         setup_test();
 
         uint8_t red = _RED >> 16;
@@ -91,7 +54,7 @@ namespace test_presenter
         unsigned long mills[]{0, 195, 205, 295, 405, 605, 805};
         uint8_t exp_led_color[]{red, red, off, off, red, off, red};
 
-        presenter::DisplayRunMode(config::Error);
+        presenter::display_runMode(config::Error);
 
         ArduinoAdapter::millis_initTurn(mills);
 
@@ -99,7 +62,8 @@ namespace test_presenter
 
         for (int j = 0; j < 7; j++)
         {
-            presenter::tick();
+            now = sensors::read();
+            presenter::blink_led(now);
             TEST_ASSERT_EQUAL(exp_led_color[j], display::leds[LED_RED]);
         }
 
@@ -112,7 +76,7 @@ namespace test_presenter
 
         setup_test();
 
-        presenter::DisplayRunMode(config::Init);
+        presenter::display_runMode(config::Init);
         TEST_ASSERT_EQUAL_CHAR_ARRAY(exp[0], display::lines[0], 84);
 
         teardown_test();
@@ -135,7 +99,6 @@ namespace test_presenter
 
     void Run()
     {
-        RUN_TEST(presenter_read_buttons);
         RUN_TEST(presenter_read_ledblink);
         RUN_TEST(presenter_display_splash);
         RUN_TEST(presenter_display_RunModes);
