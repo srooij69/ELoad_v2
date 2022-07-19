@@ -7,8 +7,11 @@
 
 #include "ArduinoAdapter.hpp"
 
+
 namespace fsm {
   unsigned long __now = 0;
+  uint32_t __breached_limit=0;
+  int __breached_sensor=0;
 
 struct State{
   config::eRunMode runMode = config::eRunMode::Init;
@@ -33,6 +36,13 @@ void setup(){
   __now = 0;
   state.runMode = config::Init;
   state.prev_state_switch = 0;
+}
+
+bool breachesLimit(int sensor, uint32_t limit){
+  __breached_limit = limit;
+  __breached_sensor = sensor;
+
+  return (sensors::sensors[sensor] > config::configValue[limit]);
 }
 
 config::eRunMode handle_state(unsigned long now){
@@ -78,6 +88,8 @@ config::eRunMode handle_state(unsigned long now){
     case config::Dummy :{
       break; }
   }
+
+  if( breachesLimit(SENSOR_TEMP, config::MaxTemp) ) newState = config::Error;
 
   state.set(newState);
 

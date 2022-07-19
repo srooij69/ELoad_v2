@@ -10,14 +10,7 @@
             "includePath": [
                 "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/include",
                 "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/src",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/variants/standard",
-                "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/.pio/libdeps/uno/Unity/src",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/.pio/libdeps/laptop/Unity/src",
                 ""
             ],
             "browse": {
@@ -25,31 +18,17 @@
                 "path": [
                     "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/include",
                     "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/src",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/cores/arduino",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/variants/standard",
-                    "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/.pio/libdeps/uno/Unity/src",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                    "C:/Users/srooi/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "c:/Users/srooi/OneDrive/Documenten/PlatformIO/Projects/ELoad_v2.1/.pio/libdeps/laptop/Unity/src",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=60101",
-                "ARDUINO_AVR_UNO",
-                "F_CPU=16000000L",
-                "ARDUINO_ARCH_AVR",
-                "ARDUINO=10808",
-                "__AVR_ATmega328P__",
+                "PLATFORMIO=60103",
                 ""
             ],
-            "cStandard": "c11",
             "cppStandard": "c++11",
-            "compilerPath": "C:/Users/srooi/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerPath": "C:/Users/srooi/programfiles/msys64/mingw64/bin/gcc.exe",
             "compilerArgs": [
-                "-mmcu=atmega328p",
                 ""
             ]
         }

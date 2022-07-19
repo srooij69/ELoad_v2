@@ -15,6 +15,7 @@ void main_loop(){
 
   __now = sensors::read();
   __runMode = fsm::handle_state(__now);
+  presenter::display_sensorData(__runMode);
   presenter::display_runMode(__runMode);
   presenter::blink_led(__now);
 }

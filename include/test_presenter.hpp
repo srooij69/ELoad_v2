@@ -82,8 +82,30 @@ namespace test_presenter
         teardown_test();
     }
 
+    void presenter_display_SensorData(void)
+    { 
+        //...............xxxC
+        //..x,xxxV..x,xxxW..
+        //..x,xxxA..x,xxxR..
+        
+    }
+
+    void presenter_display_ErrorDetails(void)
+    { //Limit to lines 1, 2
+        char exp[2][21] = { " Temp. over limit   ", " 123.0 C > 100.0 C  "};
+
+        setup_test();
+
+        sensors::sensors[SENSOR_TEMP] = 123000;
+        presenter::display_Error(config::MaxTemp, SENSOR_TEMP);
+        TEST_ASSERT_EQUAL_CHAR_ARRAY(exp[0], display::lines[1], 42);        
+
+        teardown_test();
+    }
+
+
     void presenter_display_RunModes(void)
-    {
+    { //Test line 0
         _test_title_led(config::SelectCC, "C.Curr   Select", 0x0000FF);
         _test_title_led(config::SelectCV, "C.Volt   Select", 0x0000FF);
         _test_title_led(config::SelectCP, "C.Power  Select", 0x0000FF);
@@ -102,6 +124,9 @@ namespace test_presenter
         RUN_TEST(presenter_read_ledblink);
         RUN_TEST(presenter_display_splash);
         RUN_TEST(presenter_display_RunModes);
+        RUN_TEST(presenter_display_ErrorDetails);
+
+        //RUN_TEST(presenter_display_SensorData);
     }
 
 }

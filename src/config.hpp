@@ -14,6 +14,12 @@ namespace config {
         , RunCC, RunCV, RunCP, RunCR
         , Error, Dummy };
 
+    enum eConfigValue {
+      MaxTemp
+    };
+
+    const uint32_t configValue [] = {100000};
+
     const uint16_t Period_Show_Flash_millis = 500;
     const uint16_t Led_Blink_millis         = 200;
 
