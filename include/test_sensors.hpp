@@ -60,10 +60,28 @@ namespace test_sensors
         teardown_test();
     }
 
+    void sensors_read_sensors()
+    {
+        setup_test();
+
+        int set = 213;
+        int exp = 213000;
+        int act;
+
+        ArduinoAdapter::pinState_init(sensors::sensor_pins[SENSOR_TEMP], set);
+
+        sensors::read();
+        act = sensors::sensors[SENSOR_TEMP];
+
+        TEST_ASSERT_EQUAL(exp, act);
+
+        teardown_test();
+    }
 
     void Run()
     {
         RUN_TEST(sensors_read_buttons);
+        RUN_TEST(sensors_read_sensors);
     }
 
 }

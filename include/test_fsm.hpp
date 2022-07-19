@@ -113,29 +113,42 @@ void fsm_handlestate_RunCR(void){
     _test_buttonAction(config::RunCR, BUTTON_RUN , sensors::Short, config::SelectCR );
 }
 
-void fsm_sensor_read(void){
+void fsm_sensor_read_inLimit(void){
     setup_test();
 
+    uint32_t set = 34;
+    uint32_t exp = 34000;
+    unsigned long now;
+    config::eRunMode runMode;
+
+    uint8_t pin = sensors::sensor_pins[SENSOR_TEMP];
     fsm::state.set(config::RunCC);
-    sensors::sensors[SENSOR_TEMP] = 34000;
+    ArduinoAdapter::pinState_init(pin, set);
 
-    //fsm::handle_state(config::RunCC);
-    //__runMode = fsm::handle_state(__now);
-    presenter::display_sensorData(config::RunCC);
+    now = sensors::read();
+    runMode = fsm::handle_state(now);
+    presenter::display_sensorData(runMode);
 
+    TEST_ASSERT_EQUAL(exp,  presenter::__sensorData[SENSOR_TEMP]);
     TEST_ASSERT_EQUAL(config::RunCC,  fsm::state.runMode);
-    TEST_ASSERT_EQUAL(34000,  presenter::__sensorData[SENSOR_TEMP]);
 
     teardown_test();
 } 
-void fsm_sensor_read_limit(void){
+
+void fsm_sensor_read_hitLimit(void){
     setup_test();
-    uint32_t exp = 134000;
-    fsm::state.set(config::RunCC);
-    sensors::sensors[SENSOR_TEMP] = exp;
 
     unsigned long now;
     config::eRunMode runMode;
+
+    uint32_t set = 134;
+    uint32_t exp = 134000;
+    uint8_t pin = sensors::sensor_pins[SENSOR_TEMP];
+
+    fsm::state.set(config::RunCC);
+
+    ArduinoAdapter::pinState_init(pin, set);
+
     now = sensors::read();
     fsm::handle_state(config::RunCC);
     runMode = fsm::handle_state(now);
@@ -160,8 +173,8 @@ void Run(){
     RUN_TEST( fsm_handlestate_RunCP );
     RUN_TEST( fsm_handlestate_RunCR );
   
-    RUN_TEST(fsm_sensor_read);
-    RUN_TEST(fsm_sensor_read_limit);
+    RUN_TEST(fsm_sensor_read_inLimit);
+    RUN_TEST(fsm_sensor_read_hitLimit);
 }
 
 }

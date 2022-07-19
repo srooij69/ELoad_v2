@@ -67,10 +67,28 @@ void aadapter_pinState(){
     teardown_test();
 }
 
+void aadapter_analogRead(){
+    setup_test();
+
+    int exp = 123000;
+    int act;
+
+    ArduinoAdapter::pinState_init(12, exp);
+    
+    ArduinoAdapter::set_pinMode(12, INPUT);
+    act = ArduinoAdapter::get_analogRead(12);
+
+    TEST_ASSERT_EQUAL_INT16(exp, act);
+
+    teardown_test();    
+}
+
 void Run(){
     RUN_TEST(aadapter_millis_turnBased);
     RUN_TEST(aadapter_millis_timeBased);
     RUN_TEST(aadapter_pinState);
+
+    RUN_TEST(aadapter_analogRead);
 }
 
 }

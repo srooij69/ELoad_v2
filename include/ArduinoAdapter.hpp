@@ -40,6 +40,10 @@ namespace ArduinoAdapter {
         _pin = pin;
     }
 
+    void pinState_init(int pin, uint16_t val){
+        __set_pin_init(pin, val);
+    }
+
     unsigned long get_millis(){
         unsigned long ulMillis = 0;
         if( _millis_list_index <0) {
@@ -67,6 +71,10 @@ namespace ArduinoAdapter {
             }
         }
         return bVal;
+    }
+
+    int16_t get_analogRead(int pin){
+        return __get_analogRead(pin);
     }
 
 }

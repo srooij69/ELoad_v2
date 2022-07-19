@@ -16,3 +16,11 @@ bool __get_digitalRead(int pin){
 void __set_pinMode(int pin, int state){
     pinMode(pin, state);
 }
+
+void __set_pin_init(int pin, uint16_t val){
+    //analogWrite(pin, val);
+}
+
+int16_t __get_analogRead(int pin){
+    return analogRead(pin);
+}

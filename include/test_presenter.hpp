@@ -93,16 +93,21 @@ namespace test_presenter
     void presenter_display_ErrorDetails(void)
     { //Limit to lines 1, 2
         char exp[2][21] = { " Temp. over limit   ", " 123.0 C > 100.0 C  "};
+        int32_t mock_pin_value = 123;
+        int32_t exp_value = 123000;
+        uint8_t pin = sensors::sensor_pins[SENSOR_TEMP];
 
         setup_test();
 
-        sensors::sensors[SENSOR_TEMP] = 123000;
+        ArduinoAdapter::pinState_init(pin, mock_pin_value);
+
+        sensors::read();
         presenter::display_Error(config::MaxTemp, SENSOR_TEMP);
+        TEST_ASSERT_EQUAL(exp_value, sensors::sensors[SENSOR_TEMP]);        
         TEST_ASSERT_EQUAL_CHAR_ARRAY(exp[0], display::lines[1], 42);        
 
         teardown_test();
     }
-
 
     void presenter_display_RunModes(void)
     { //Test line 0

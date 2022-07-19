@@ -21,10 +21,14 @@ namespace sensors {
     long __buttons_start_down[NR_BUTTONS];
 
     int32_t sensors[NR_SENSORS];
+    int8_t sensor_pins[NR_SENSORS];
+
     char sensorUnits[] {'C'};
 
     void setup(){
         for(int i=0; i< NR_BUTTONS; i++) buttons[i]=None;
+
+        sensor_pins[SENSOR_TEMP] = 8;
     }
 
     eAction _downIntervalToEnum(long interval){
@@ -57,9 +61,14 @@ namespace sensors {
         }
     }
 
+    void _read_sensors(unsigned long now){
+        sensors[SENSOR_TEMP] = 1000 * ArduinoAdapter::get_analogRead(sensor_pins[SENSOR_TEMP]);
+    }
+
     unsigned long read(){
         __now = ArduinoAdapter::get_millis();
         _read_buttonpress(__now);
+        _read_sensors(__now);
         return __now;
     }
 }

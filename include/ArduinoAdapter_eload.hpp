@@ -13,7 +13,7 @@
 //When running on Laptop
 #include <time.h>
 
-bool __pin[21];
+int16_t __pin[21];
 
 unsigned long __get_millis(){
     time_t now = time(nullptr);
@@ -21,8 +21,16 @@ unsigned long __get_millis(){
 }
 
 bool __get_digitalRead(int pin){
-    return __pin[pin];
+    return __pin[pin] > 0;
 }
 
 void __set_pinMode(int pin, int state){
+}
+
+void __set_pin_init(int pin, uint16_t val){
+    __pin[pin] = val;
+}
+
+int16_t __get_analogRead(int pin){
+    return __pin[pin];
 }
