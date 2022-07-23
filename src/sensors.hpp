@@ -4,8 +4,10 @@
 #include "ArduinoAdapter.hpp"
 #include "config.hpp"
 
-#define SENSOR_TEMP 0
-#define NR_SENSORS  1
+#define SENSOR_TEMP    0
+#define SENSOR_CURRENT 1
+#define SENSOR_VOLT    2
+#define NR_SENSORS     3
 
 #define BUTTON_MODE    0
 #define BUTTON_RUN     1
@@ -19,16 +21,24 @@ namespace sensors {
 
     eAction buttons[NR_BUTTONS];
     long __buttons_start_down[NR_BUTTONS];
+    int8_t button_pins[NR_BUTTONS];
 
     int32_t sensors[NR_SENSORS];
     int8_t sensor_pins[NR_SENSORS];
 
-    char sensorUnits[] {'C'};
+    char sensorUnits[] {'C', 'A'};
 
     void setup(){
         for(int i=0; i< NR_BUTTONS; i++) buttons[i]=None;
 
-        sensor_pins[SENSOR_TEMP] = 8;
+        button_pins[BUTTON_MODE]    = 10;
+        button_pins[BUTTON_RUN]     = 11;
+        button_pins[BUTTON_ENCODER] = 12;
+        
+
+        sensor_pins[SENSOR_TEMP] = 7;
+        sensor_pins[SENSOR_CURRENT] = 8;
+        sensor_pins[SENSOR_VOLT] = 9;
     }
 
     eAction _downIntervalToEnum(long interval){
@@ -49,7 +59,7 @@ namespace sensors {
 
         for(int btn=0; btn<NR_BUTTONS; btn++){
             interval =0;
-            btnDown = ! ArduinoAdapter::get_digitalRead(btn);
+            btnDown = ! ArduinoAdapter::get_digitalRead(button_pins[btn]);
 
             if( btnDown & (__buttons_start_down[btn]==0))  __buttons_start_down[btn] = now; //Mark first down
             if( __buttons_start_down[btn] > 0) interval = now - __buttons_start_down[btn]; //Only calc interval for when marked down
@@ -63,6 +73,7 @@ namespace sensors {
 
     void _read_sensors(unsigned long now){
         sensors[SENSOR_TEMP] = 1000 * ArduinoAdapter::get_analogRead(sensor_pins[SENSOR_TEMP]);
+        sensors[SENSOR_CURRENT] = 1 * ArduinoAdapter::get_analogRead(sensor_pins[SENSOR_CURRENT]);
     }
 
     unsigned long read(){
