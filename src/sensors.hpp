@@ -30,6 +30,7 @@ namespace sensors {
 
     void setup(){
         for(int i=0; i< NR_BUTTONS; i++) buttons[i]=None;
+        for(int i=0; i< NR_SENSORS; i++) sensors[i]=0;
 
         button_pins[BUTTON_MODE]    = 10;
         button_pins[BUTTON_RUN]     = 11;
@@ -81,6 +82,10 @@ namespace sensors {
         _read_buttonpress(__now);
         _read_sensors(__now);
         return __now;
+    }
+
+    bool isShort(uint8_t button){
+        return ( sensors::buttons[button] == sensors::Short);
     }
 }
 

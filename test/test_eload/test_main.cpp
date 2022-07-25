@@ -21,10 +21,10 @@ int main( int argc, char **argv){
 
   main_setup();
 
-  //test_fsm::Run();
-  //test_ArduinoAdapter::Run();
+  test_fsm::Run();
+  test_ArduinoAdapter::Run();
   test_presenter::Run();
-  //test_sensors::Run();
+  test_sensors::Run();
 
   UNITY_END(); // stop unit testing
 }
