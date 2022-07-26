@@ -34,6 +34,24 @@ namespace presenter {
         display::leds[LED_BLUE]  = (led_color >>  0) & 0x00FF;
     }
 
+    void _FormatValue3(char result[], int32_t value, char unit){
+        sprintf(result, "%3d%c", value/1000, unit);
+    }
+
+    void _FormatValue6(char result[], int32_t value){
+        char * pattern;
+        
+        int iWhole = value/1000;
+        int iFrac  = value % 1000; 
+        
+        pattern = (char *)"%2d.%03d";
+        if( iWhole> 99)  pattern = (char *)"%3d.%02d";
+        if( iWhole>999)  pattern = (char *)"%4d.%01d";
+        if( iWhole>9999) pattern = (char *)"%6d";
+
+        sprintf(result, pattern, iWhole, iFrac);
+    }
+
     void display_sensorData(config::eRunMode runMode){
         for(int i=0; i<NR_SENSORS;i++) {
             __sensorData[i] = sensors::sensors[i];    
@@ -47,13 +65,11 @@ namespace presenter {
         char _buffer[5];
         
         //Temp data
-        uint32_t sns = sensors::sensors[SENSOR_TEMP] / 1000;
-
+        uint32_t sns = sensors::sensors[SENSOR_TEMP];
         char unit = sensors::sensorUnits[SENSOR_TEMP];
-        sprintf(_buffer, "%3d%c", sns, unit);
-        
+        _FormatValue3(_buffer, sns, unit);        
         display::writeText(0, 16, _buffer);
-        
+
     }
 
     void display_runMode(config::eRunMode runMode){
@@ -74,20 +90,6 @@ namespace presenter {
             if( runMode == config::Init) _ShowSplash(); 
         } 
         prevMode = runMode;  
-    }
-
-    void _FormatValue6(char result[], int32_t value){
-        char * pattern;
-        
-        int iWhole = value/1000;
-        int iFrac  = value % 1000; 
-        
-        pattern = (char *)"%2d.%03d";
-        if( iWhole> 99)  pattern = (char *)"%3d.%02d";
-        if( iWhole>999)  pattern = (char *)"%4d.%01d";
-        if( iWhole>9999) pattern = (char *)"%6d";
-
-        sprintf(result, pattern, iWhole, iFrac);
     }
 
     void display_Error(config::eConfigValue config, int sensor){

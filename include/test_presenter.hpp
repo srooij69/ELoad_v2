@@ -84,7 +84,7 @@ namespace test_presenter
 
         teardown_test();
     }
-/*
+
     void presenter_display_SensorData(void)
     { 
         //01234567890123456789
@@ -105,17 +105,12 @@ namespace test_presenter
         fsm::state.set(config::SelectCP);
         //fsm::state.set(config::RunCP);
         main_loop();
-        //sensors::read();
-        //presenter::display_runMode(config::RunCP);
-        //presenter::display_sensorData(config::RunCP);
-        
-        //uint32_t sns = sensors::sensors[SENSOR_TEMP] / 1000;
-        //TEST_ASSERT_EQUAL(213, sns);
+         
         TEST_ASSERT_EQUAL_CHAR_ARRAY(exp, display::lines[0], 20);        
-      
+
         teardown_test();        
     }
-*/
+
     void presenter_display_ErrorDetails_MaxCurrent(void){
         char exp[2][21] = { " Current over limit ", "  1.023A >  1.001A  "};
         int32_t mock_pin_value = 1023;
@@ -178,7 +173,7 @@ namespace test_presenter
         RUN_TEST(presenter_display_ErrorDetails_MaxTemp);
         RUN_TEST(presenter_display_ErrorDetails_MaxCurrent);
 
-     //   RUN_TEST(presenter_display_SensorData);
+        RUN_TEST(presenter_display_SensorData);
     }
 
 }
