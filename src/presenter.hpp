@@ -27,31 +27,6 @@ namespace presenter {
         display::writeText(1,0, config::splash_text[0] );
         display::writeText(2,0, config::splash_text[1]);
     }
-/*
-    void _ShowValue(int loc, long value, char unit, uint8_t width){
-        char _buffer[22];
-        char * pattern;
-        sprintf(_buffer, "        ");
-
-        int iWhole = value/1000;
-        int iFrac  = value % 1000; 
-        
-        pattern = (char *)"%3d.%01d";
-
-        if(loc==LOC_TEMP){
-            pattern = (char *)"%3d";
-            width = 4;
-        } else {
-            if( iWhole<100)  pattern = (char *)"%2d.%02d";
-            if( iWhole<10)   pattern = (char *)"%1d.%03d";
-            if( iWhole>999)  pattern = (char *)"%5d";
-        }
-        sprintf(_buffer, pattern, iWhole, iFrac);
-
-        _buffer[width-1] = unit; //Add unit to last position
-        _writeToLocation(location[loc], _buffer);
-    }
-*/
 
     void _set_led_color(uint32_t led_color){
         display::leds[LED_RED]   = (led_color >> 16) & 0x00FF;
@@ -101,19 +76,36 @@ namespace presenter {
         prevMode = runMode;  
     }
 
+    void _FormatValue6(char result[], int32_t value){
+        char * pattern;
+        
+        int iWhole = value/1000;
+        int iFrac  = value % 1000; 
+        
+        pattern = (char *)"%2d.%03d";
+        if( iWhole> 99)  pattern = (char *)"%3d.%02d";
+        if( iWhole>999)  pattern = (char *)"%4d.%01d";
+        if( iWhole>9999) pattern = (char *)"%6d";
+
+        sprintf(result, pattern, iWhole, iFrac);
+    }
+
     void display_Error(config::eConfigValue config, int sensor){
         char txt[21];
         char const * errorText;
         char unit ;
-
+        char sSens[9];
+        char sCfg[9];
         display_runMode(config::Error);
-        uint32_t cfg = config::configValue[config] / 1000;
-        uint32_t sns = sensors::sensors[sensor] / 1000;
+        int32_t cfg = config::configValue[config];
+        int32_t sns = sensors::sensors[sensor];
 
         unit = sensors::sensorUnits[sensor];
         errorText = config::configTxt[config];
+        _FormatValue6(sSens, sns  );      
+        _FormatValue6(sCfg, cfg  );
 
-        sprintf(txt, "%d.0 %c > %d.0 %c", sns, unit, cfg, unit); 
+        sprintf(txt, "%s%c > %s%c", sSens, unit, sCfg, unit);
         display::writeText(1, 0, errorText );
         display::writeText(2, 1, txt);
 
